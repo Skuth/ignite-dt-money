@@ -1,15 +1,27 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { api } from "../../services/api"
 
 import { Container } from "./styles"
 
+interface Transaction {
+  id: string
+  title: string
+  type: "deposit" | "withdraw",
+  category: string
+  amount: number
+  createAt: Date
+}
+
 export const TransactionsTable = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+
   useEffect(() => {
     api.get("transactions")
       .then(res => res.data)
-      .then(console.log)
+      .then(res => setTransactions(res.transactions))
   }, [])
+  
 
   return (
     <Container>
@@ -24,40 +36,21 @@ export const TransactionsTable = () => {
         </thead>
 
         <tbody>
-          <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="deposit">R$ 12.000,00</td>
-            <td>Desenvolvimento</td>
-            <td>20/02/2022</td>
-          </tr>
-
-          <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="withdraw">- R$ 12.000,00</td>
-            <td>Desenvolvimento</td>
-            <td>20/02/2022</td>
-          </tr>
-
-          <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="deposit">R$ 12.000,00</td>
-            <td>Desenvolvimento</td>
-            <td>20/02/2022</td>
-          </tr>
-
-          <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="deposit">R$ 12.000,00</td>
-            <td>Desenvolvimento</td>
-            <td>20/02/2022</td>
-          </tr>
-
-          <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="withdraw">- R$ 12.000,00</td>
-            <td>Desenvolvimento</td>
-            <td>20/02/2022</td>
-          </tr>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={transaction.type}>
+                {Number(transaction.amount).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL"
+                })}
+              </td>
+              <td>{transaction.category}</td>
+              <td>
+                {new Date(transaction.createAt).toLocaleDateString("pt-BR")}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Container>

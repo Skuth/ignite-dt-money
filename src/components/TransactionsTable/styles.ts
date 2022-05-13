@@ -10,6 +10,7 @@ export const Container = styled.div`
     th {
       color: var(--text-body);
       padding: 1rem 2rem;
+      font-weight: 500;
       text-align: left;
       line-height: 1.5rem;
     }
