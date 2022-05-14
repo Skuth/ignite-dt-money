@@ -7,7 +7,7 @@ import closeImg from "../../assets/close.svg"
 import incomeImg from "../../assets/income.svg"
 import outcomeImg from "../../assets/outcome.svg"
 
-import { api } from "../../services/api"
+import { useTransactions } from "../../hooks/TransactionsContext"
 
 import { Container, TransactionTypeContainer, RadioBox } from "./styles"
 
@@ -20,6 +20,8 @@ export const NewTransactionModal: React.FC<NewTransactionModalProps> = ({
   isOpen,
   onCloseNewTransactionModal
 }) => {
+  const { createTransaction } = useTransactions()
+
   const [title, setTitle] = useState<string>("")
   const [amount, setAmount] = useState<number>(0)
   const [category, setCategory] = useState<string>("")
@@ -33,7 +35,9 @@ export const NewTransactionModal: React.FC<NewTransactionModalProps> = ({
     setType("deposit")
   }
 
-  const handleCreateNewTransaction = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateNewTransaction = (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
 
     const payload = {
@@ -43,8 +47,8 @@ export const NewTransactionModal: React.FC<NewTransactionModalProps> = ({
       category
     }
 
-    api.post("/transactions", payload)
-      .then(() => resetValues())
+    createTransaction(payload)
+      .then(() => handleCloseModal())
   }
 
   const handleCloseModal = () => {

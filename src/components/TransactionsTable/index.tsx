@@ -1,27 +1,9 @@
-import { useEffect, useState } from "react"
-
-import { api } from "../../services/api"
+import { useTransactions } from "../../hooks/TransactionsContext"
 
 import { Container } from "./styles"
 
-interface Transaction {
-  id: string
-  title: string
-  type: "deposit" | "withdraw",
-  category: string
-  amount: number
-  createAt: Date
-}
-
 export const TransactionsTable = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-
-  useEffect(() => {
-    api.get("transactions")
-      .then(res => res.data)
-      .then(res => setTransactions(res.transactions))
-  }, [])
-  
+  const { transactions } = useTransactions()
 
   return (
     <Container>
@@ -40,14 +22,18 @@ export const TransactionsTable = () => {
             <tr key={transaction.id}>
               <td>{transaction.title}</td>
               <td className={transaction.type}>
-                {Number(transaction.amount).toLocaleString("pt-BR", {
+                {Number(
+                  transaction.type === "deposit"
+                    ? transaction.amount
+                    : transaction.amount * -1
+                ).toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL"
                 })}
               </td>
               <td>{transaction.category}</td>
               <td>
-                {new Date(transaction.createAt).toLocaleDateString("pt-BR")}
+                {new Date(transaction.createdAt).toLocaleDateString("pt-BR")}
               </td>
             </tr>
           ))}

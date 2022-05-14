@@ -7,6 +7,8 @@ import { Header } from "./components/Header";
 import { Dashboard } from "./components/Dashboard";
 import { NewTransactionModal } from "./components/NewTransactionModal";
 
+import { TransactionsProvider } from "./hooks/TransactionsContext";
+
 Modal.setAppElement('#root')
 
 export const App = () => {
@@ -21,7 +23,7 @@ export const App = () => {
   }
 
   return (
-    <>
+    <TransactionsProvider>
       <GlobalStyle />
 
       <Header
@@ -33,7 +35,7 @@ export const App = () => {
         isOpen={isModalOpen}
         onCloseNewTransactionModal={handleCloseNewTransactionModal}
       />
-    </>
+    </TransactionsProvider>
   );
 }
 

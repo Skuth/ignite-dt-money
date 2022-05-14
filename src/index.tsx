@@ -19,7 +19,7 @@ createServer({
           type: "deposit",
           category: faker.random.word(),
           amount: faker.finance.amount(),
-          createAt: faker.date.recent()
+          createdAt: faker.date.recent()
         },
         {
           id: faker.random.uuid(),
@@ -27,7 +27,7 @@ createServer({
           type: "withdraw",
           category: faker.random.word(),
           amount: faker.finance.amount(),
-          createAt: faker.date.recent()
+          createdAt: faker.date.recent()
         }
       ]
     })

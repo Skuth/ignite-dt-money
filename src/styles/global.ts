@@ -1,6 +1,17 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   :root {
     --red: #E52E4D;
     --green: #33CC95;
@@ -79,6 +90,8 @@ export const GlobalStyle = createGlobalStyle`
     padding: 3rem;
     position: relative;
     border-radius: 0.25rem;
+
+    animation: modalFadeIn 0.5s;
   }
   .react-modal-close {
     position: absolute;
